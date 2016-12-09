@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<script>
+window.onload=init;
+function init()
+{
+	var oBtn=document.getElementById("addButton");
+	oBtn.onclick=handleButtonClick;
+}
+function handleButtonClick()
+{
+	var textInput=document.getElementById("songTextInput");
+	var songName=textInput.value;
+	var li=document.createElement("li");
+	li.innerHTML=songName;
+	var ul=document.getElementById("playlist");
+	ul.appendChild(li);
+	/*if(songName=="")
+	{
+	   alert("please enter a song");
+	}
+	else
+	{
+		alert("Adding"+songName);
+	}*/
+}
+	
+</script>
+</head>
+
+<body>
+<form>
+ <input type="text" id="songTextInput" size="40" placeholder="Song name">
+ <input type="button" id="addButton" value="Add Song">
+</form>
+<ul id="playlist">
+</ul>
+
+</body>
+</html>
