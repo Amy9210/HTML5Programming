@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<script>
+function Dog(name,breed,weight)//构造函数命名时首字母要大写
+{
+	this.name=name;//属性名和行参不要求相同，不过通常是一样的
+	this.breed=breed;
+	this.weight=weight;
+	this.bark=function()
+	{
+		if(this.weight>25)
+		{
+			alert(this.name+"says Woof");
+		}
+		else
+		{
+			alert(this.name+"says Yip");
+		}
+	}
+}
+var fido=new Dog("Fido","Mixed",38);//调用构造函数，要在调用前面加上关键词new
+var tiny=new Dog("Tiny","Chawalla",8);
+var clifford=new Dog("Clifford","Bloodhound",65);
+
+//fido.bark();
+//tiny.bark();
+//clifford.bark();
+</script>
+</head>
+
+<body>
+</body>
+</html>
