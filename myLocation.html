@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<script>
+window.onload=getMyLocation;
+function getMyLocation()
+{
+	if(navigator.geolocation)
+	{
+		navigator.geolocation.getCurrentPosition(displayLocation);
+	}
+	else
+	{
+		alert("Oops,no geolocation support");
+	}
+}
+function displayLocation(position)
+{
+	var latitude=position.coords.latitudes;
+	var longitude=position.coords.longitude;
+	var div=document.getElementById("location");
+	div.innerHTML="You are at Latitude:"+latitude+",Longitude:"+Longitude;
+}
+</script>
+</head>
+
+<body>
+<div id="location">
+  Your location will go here.
+</div>
+</body>
+</html>
