@@ -7,10 +7,10 @@
 window.onload=getMyLocation;
 function getMyLocation()
 {
-	if(navigator.geolocation)
-	{
-		navigator.geolocation.getCurrentPosition(displayLocation);
-	}
+	if(navigator.geolocation)//用navigator.geolocation属性测试浏览器是否支持地理定位	
+        {
+		navigator.geolocation.getCurrentPosition(displayLocation);//navigator.geolocation属性是一个对象，其中包含整个地理定位API，这个API支持的主要方法是getCurrentPosition。	
+        }
 	else
 	{
 		alert("Oops,no geolocation support");
