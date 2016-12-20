@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<script>
+window.onload=function()
+{
+	var url="http://localhost/gumball/sales.json";
+	var request=new XMLHttpRequest();
+	requst.open("GET",url);
+	request.onload=function()
+	{
+		if(request.status==200)
+		{
+			updateSales(request.responseText)
+	    }
+	request.send(null);
+    }
+}
+function updateSales(responseText)
+{
+	var salesDiv=document.getElementById("sales");
+	salesDiv.innerHTML=responseText
+}
+</script>
+<link rel="stylesheet" href="mightygumball.css">
+</head>
+
+<body>
+<h1>Mighty Gumball Sales</h1>
+<div id="sales">
+</body>
+</html>
+
+
+
+
+
