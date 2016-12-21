@@ -8,7 +8,7 @@ window.onload=function()
 {
 	var url="http://localhost/gumball/sales.json";
 	var request=new XMLHttpRequest();
-	requst.open("GET",url);
+	request.open("GET",url);
 	request.onload=function()
 	{
 		if(request.status==200)
@@ -24,7 +24,6 @@ function updateSales(responseText)
 	salesDiv.innerHTML=responseText
 }
 </script>
-<link rel="stylesheet" href="mightygumball.css">
 </head>
 
 <body>
