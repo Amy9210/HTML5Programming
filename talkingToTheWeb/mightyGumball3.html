@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<script>
+
+function updateSales(sales)
+{
+	var salesDiv=document.getElementById("Sales");
+	for(var i=0;i<sales.length;i++)
+	{
+		var sale=sales[i];
+		var div=document.createElement("div");
+		div.setAttribute("class","salesItem");
+		div.innerHTML=sale.name+" "+"sold"+" "+sale.sales+" "+"gumballs";
+		salesDiv.appendChild(div);
+	}
+}
+</script>
+</head>
+
+<body>
+<h1>Mighty Gumball Sales</h1>
+<div id="Sales"></div>
+<script src="http://gumball.wickedlysmart.com/?callback=updateSales"></script>
+<p>callback表示生成javascript时要调用函数updateSales</p>
+</body>
+</html>
+
+
+
+
+
