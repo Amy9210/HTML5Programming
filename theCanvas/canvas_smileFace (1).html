@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>TweetShirt</title>
+	<style>
+		canvas{
+			border:1px solid black;
+		}
+	</style>
+	<script>
+		window.onload=function()
+		{
+			var canvas=document.getElementById("tshirtCanvas");	 
+			var context=canvas.getContext("2d");
+			drawFace(canvas,context);
+			drawLeftEye(canvas,context);
+			drawRightEye(canvas,context);
+            drawNose(canvas,context);
+            drawMouse(canvas,context);
+			/*context.moveTo(100,150);
+			context.lineTo(250,75);
+			context.lineTo(125,30);
+			context.closePath();
+			context.lineWidth=5;
+			context.stroke();
+			context.fillStyle="red";
+			context.fill();*/
+		}
+		function drawFace(canvas,context)
+		{
+			context.beginPath();
+			context.arc(300,300,150,0,degreesToRadians(360),true);
+			context.fillStyle="#ffcccc";
+			context.fill();
+		}
+		function drawLeftEye(canvas,context)
+		{
+			context.beginPath();
+			context.arc(240,300,20,0,degreesToRadians(360),true);
+			context.fillStyle="black";
+			context.fill();
+		}
+		function drawRightEye(canvas,context)
+		{
+			context.beginPath();
+			context.arc(360,300,20,0,degreesToRadians(360),true);
+			context.fillStyle="black";
+			context.fill();
+		}
+        function drawNose(canvas,context)
+		{
+			context.beginPath();
+			context.moveTo(300,300);
+			context.lineTo(300,310);
+			context.closePath();
+			context.lineWidth=5;
+			context.stroke();
+			context.fillStyle="red";
+			context.fill();
+		}
+		function drawMouse(canvas,context)
+		{
+			context.beginPath();
+			context.arc(300,300,50,degreesToRadians(135),degreesToRadians(45),true);
+			context.stroke();
+		}
+		function degreesToRadians(degrees) 
+		{
+            return (degrees * Math.PI)/180;
+        }
+	</script>
+</head>
+<body>
+<canvas id="tshirtCanvas" width="600" height="600">	
+  Hey,please upgrade your browser.
+</canvas>
+</body>
+</html>
