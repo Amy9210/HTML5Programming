@@ -74,6 +74,7 @@
         }
         function drawText(canvas,context)
         {
+		//打开网页时字体并不显示，要点击preview后才会显示
         	var selectObj=document.getElementById("foregroundColor");
         	var index=selectObj.selectedIndex;
         	var fgColor=selectObj[index].value;
