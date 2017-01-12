@@ -12,13 +12,17 @@
 	      <img src="images/highlight.png" alt="highlight for tv">
 	    </div>
 	    <div id="videoDiv">
-          <!--.mp4(包含H.624):Safari
+         <!--.mp4(包含H.624):Safari
               .webm:chrome
               .ogv:firefox/opera-->
-	     <video src="video/Doraemon.mp4" id="video" poster="video/Doraemon.jpg" controls autoplay width="480" height="360">
-         <source src="video/Doraemon.mp4">
-         <source src="video/Doraemon.webm">
-         <source src="video/Doraemon.ogv">
+          <!--src中使用的文件是具体视频的容器
+              type表示视频文件的MIME类型，指定了容器格式
+              codecs参数指定使用哪个编码器对视频和音频编码
+              codecs参数有双引号，所以type两边需要使用单引号-->
+	     <video  id="video" poster="video/Doraemon.jpg" controls autoplay width="480" height="360">
+         <source src="video/Doraemon.mp4" type='video/mp4; codecs="avc1.42E01E,mp4a.40.2"'>
+         <source src="video/Doraemon.webm" type='video/webm; codecs="vp8,vorbis"'>
+         <source src="video/Doraemon.ogv" type='video/ogg; codecs="theora,vorbis"'>
          <p>Sorry, your browser doesn’t support the video element</p>
          </video>
 
