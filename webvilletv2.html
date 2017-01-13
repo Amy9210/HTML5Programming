@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Webville TV</title>
+     <link rel="stylesheet" href="webvilletv.css">
+     <script>
+     	var position=0;/*定义一个变量记录播放哪个视频*/
+     	var playlist;/*定义一个变量保存视频播放列表数组*/
+     	var video;/*保存video元素的引用*/
+
+     	window.onload=function()
+     	{
+     		playlist=[
+     		  "video/Doraemon.mp4",
+     		  "video/SpongeBob.mp4",
+     		  "video/Tom.mp4"
+     		]
+     		video=document.getElementById("video");
+     		video.addEventListener("ended",nextVideo,false);/*为视频ended事件增加一个处理程序*/
+
+     		video.src=playlist[position];/*为第一个视频设置src*/
+     		video.load();/*加载视频然后播放*/
+     		video.play();
+     	}
+     	function nextVideo()
+     	{
+     		position++;
+            if(position>=playlist.length)
+            {
+            	position=0;
+            }
+     		video.src=playlist[position];
+     		video.load();
+     		video.play();
+     	}
+     </script>
+</head>
+<body>
+	<div id="tv">
+	  <div id="tvConsole">
+	    <div id="highlight">
+	      <img src="images/highlight.png" alt="highlight for tv">
+	    </div>
+	    <div id="videoDiv">
+          <!--.mp4(包含H.624):Safari
+              .webm:chrome
+              .ogv:firefox/opera-->
+          <!--src中使用的文件是具体视频的容器
+              type表示视频文件的MIME类型，指定了容器格式
+              codecs参数指定使用哪个编码器对视频和音频编码
+              codecs参数有双引号，所以type两边需要使用单引号-->
+	     <video  id="video" poster="video/Doraemon.jpg" controls autoplay width="480" height="360">
+         <p>Sorry, your browser doesn’t support the video element</p>
+         </video>
+
+	    </div>
+	  </div>
+	</div>
+</body>
+</html>
