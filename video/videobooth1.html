@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Starring You Video Booth</title>
+	<link rel="stylesheet" href="videobooth.css">
+    <script>
+    	window.onload=function()
+    	{ 
+    		/*document.querySelectorAll返回一个与css选择器参数匹配的元素对象数组*/
+    		var controlLinks=document.querySelectorAll("a.control");
+    		for(var i=0;i<controlLinks.length;i++)
+    		{
+    			controlLinks[i].onclick=handleControl;
+    		}
+    		var effectLinks=document.querySelectorAll("a.effect");
+    		for(var i=0;i<effectLinks.length;i++)
+    		{
+    			effectLinks[i].onclick=setEffect;
+    		}
+    		var videoLinks=document.querySelectorAll("a.videoSelection");
+    		for(var i=0;i<videoLinks.length;i++)
+    		{
+    			videoLinks[i].onclick=setVideo;
+    		}
+    		pushUnpushButtons("video1",[]);
+    		pushUnpushButtons("video2",[]);
+
+    	}
+    	/*e？*/
+    	function handleControl(e)
+    	{
+    		var id=e.target.getAttribute("id");
+
+    		if(id=="play")
+    		{
+    			pushUnpushButtons("play",["pause"]);
+    		}
+    		else if(id=="pause")
+    		{
+    			pushUnpushButtons("pause",["play"]);
+    		}
+    		else if(id=="loop")
+    		{
+    			if(isButtonPushed("loop"))
+    			{
+    				pushUnpushButtons("",["loop"]);
+    			}
+    			else
+    			{
+    				pushUnpushButtons("loop",[]);
+    			}
+    		}
+    		else if(id=="mute")
+    		{
+    			if(isButtonPushed("mute"))
+    			{
+    				pushUnpushButtons("",["mute"]);
+    			}
+    			else
+    			{
+    				pushUnpushButtons("mute",[]);
+    			}
+    		}
+
+    	}
+    	function setEffect(e)
+    	{
+    		var id=e.target.getAttribute("id");
+    		if(id=="normal")
+    		{
+    			pushUnpushButtons("normal",["western","noir","scifi"]);
+    		}
+    		else if(id=="western")
+    		{
+    			pushUnpushButtons("western",["normal","noir","scifi"]);
+    		}
+    		else if(id=="noir")
+    		{
+    			pushUnpushButtons("noir",["normal","western","scifi"]);
+    		}
+    		else if(id=="scifi")
+    		{
+                pushUnpushButtons("scifi",["normal","western","noir"]);
+    		}
+    	}
+    	function setVideo(e)
+    	{
+    		var id=e.target.getAttribute("id");
+    		if(id=="video1")
+    		{
+    			pushUnpushButtons("video1",["video2"]);
+    		}
+    		else if(id=="video2")
+    		{
+    			pushUnpushButtons("video2",["video1"]);
+    		}
+    	}
+  /*以下为辅助函数*/
+    	function pushUnpushButtons(idToPush, idarrayToUnpush) 
+    	{
+    		if (idToPush != "") 
+    		{
+              var anchor = document.getElementById(idToPush);
+              var theClass = anchor.getAttribute("class");
+              if (!theClass.indexOf("selected") >= 0) 
+              {
+                     theClass = theClass + " selected";
+                     anchor.setAttribute("class", theClass);/*在锚中增加“selected”类，从而“按下”这个按钮*/
+                     var newImage = "url(images/" + idToPush + "pressed.png)";
+                     anchor.style.backgroundImage = newImage;/*更新锚元素的背景图像*/
+                }
+            }
+           
+            for (var i = 0; i < idarrayToUnpush.length; i++) 
+            	/*要让按钮不再按下，循环处理不再按下的id数组中的各个元素，获取各个锚*/
+            {
+                    anchor = document.getElementById(idarrayToUnpush[i]);
+                    theClass = anchor.getAttribute("class");
+                    if (theClass.indexOf("selected") >= 0) 
+                    	/*确保按钮已经按下，如果是，会有一个selected类*/
+                    {
+                        theClass = theClass.replace("selected", "");
+                        anchor.setAttribute("class", theClass);
+                        /*anchor.style.backgroundImage = "";*/
+                    }
+            }
+        }
+        function isButtonPushed(id) 
+        {
+            var anchor = document.getElementById(id);
+            var theClass = anchor.getAttribute("class");
+            return (theClass.indexOf("selected") >= 0);
+        }
+    </script>
+</head>
+<body>
+	<div id="console">
+
+	  <div id="videoDiv">
+	    <video id="video" width="720" height="480"></video>
+	  </div>
+
+	  <div id="dashboard">
+	    <div id="effects">
+	    	<a class="effect" id="normal"></a>
+	    	<a class="effect" id="western"></a>
+	    	<a class="effect" id="noir"></a>
+	    	<a class="effect" id="scifi"></a>
+	    </div>
+	    <div id="controls">
+	    	<a class="control" id="play"></a>
+	    	<a class="control" id="pause"></a>
+	    	<a class="control" id="loop"></a>
+	    	<a class="control" id="mute"></a>
+	    </div>
+	    <div id="videoSelection">
+	        <a class="videoSelection" id="video1"></a>
+	        <a class="videoSelection" id="video2"></a>
+	    </div>
+	  </div>
+
+	</div>
+</body>
+</html>
