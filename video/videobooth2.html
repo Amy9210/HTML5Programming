@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Starring You Video Booth</title>
+	<link rel="stylesheet" href="videobooth.css">
+    <script>
+
+        var videos={video1:"video/demovideo1",video2:"video/demovideo2"};
+        var effectFunction=null;/*用此变量保存一个相应的函数，它知道如何处理视频数据，并将其变成相应效果*/
+    	window.onload=function()
+    	{ 
+    		var video=document.getElementById("video");
+    		video.src=videos["video1"]+getFormatExtension();/*注意如何取出数组中的元素*/
+    		video.load();
+    		/*document.querySelectorAll返回一个与css选择器参数匹配的元素对象数组*/
+    		var controlLinks=document.querySelectorAll("a.control");
+    		for(var i=0;i<controlLinks.length;i++)
+    		{
+    			controlLinks[i].onclick=handleControl;
+    		}
+    		var effectLinks=document.querySelectorAll("a.effect");
+    		for(var i=0;i<effectLinks.length;i++)
+    		{
+    			effectLinks[i].onclick=setEffect;
+    		}
+    		var videoLinks=document.querySelectorAll("a.videoSelection");
+    		for(var i=0;i<videoLinks.length;i++)
+    		{
+    			videoLinks[i].onclick=setVideo;
+    		}
+    		//pushUnpushButtons("video1",[]);
+    		//pushUnpushButtons("video2",[]);
+    		/*如果播放视频时没有选择loop，这个视频会播放到结束，但是play键仍会保持按下状态，所以要使其弹起*/
+            video.addEventListener("ended",endedHandler,false);
+            video.addEventListener("play",processFrame,false);
+    	}
+    	function endedHandler()
+            {
+    	       pushUnpushButtons("",["play"]);
+            }
+    	
+    	function getFormatExtension()
+     	{
+     		var video=document.getElementById("video");/*不能保留一个全局视频变量，所以要将video变量增加到getFormExtension函数上面*/
+     		if(video.canPlayType("video/mp4")!="")
+     		{
+     			return ".mp4";
+     		}
+     		if(video.canPlayType("video/webm")!="")
+     		{
+     			return ".webm";
+     		}
+     		if(video.canPlayType("video/ogg")!="")
+     		{
+     			return ".ogv";
+     		}
+     	}
+    	/*e？*/
+    	function handleControl(e)
+    	{
+    		var id=e.target.getAttribute("id");
+            var video=document.getElementById("video");
+    		if(id=="play")
+    		{
+    			pushUnpushButtons("play",["pause"]);
+    			if(video.ended)
+    			{
+    				video.load();
+    			}
+    			video.play();
+    		}
+    		else if(id=="pause")
+    		{
+    			pushUnpushButtons("pause",["play"]);
+    			video.pause();
+    		}
+    		else if(id=="loop")
+    		{
+    			if(isButtonPushed("loop"))
+    			{
+    				pushUnpushButtons("",["loop"]);
+    			}
+    			else
+    			{
+    				pushUnpushButtons("loop",[]);
+    			}
+    			video.loop=!video.loop;/*将当前布尔值取反*/
+    		}
+    		else if(id=="mute")
+    		{
+    			if(isButtonPushed("mute"))
+    			{
+    				pushUnpushButtons("",["mute"]);
+    			}
+    			else
+    			{
+    				pushUnpushButtons("mute",[]);
+    			}
+    			video.muted=!video.muted;
+    		}
+
+    	}
+    	function setEffect(e)
+    	{
+    		var id=e.target.getAttribute("id");
+    		if(id=="normal")
+    		{
+    			pushUnpushButtons("normal",["western","noir","scifi"]);
+    			effectFunction=null;/*按下各个按钮时，就把effectFunction变量设置为相应的函数*/
+    		}
+    		else if(id=="western")
+    		{
+    			pushUnpushButtons("western",["normal","noir","scifi"]);
+    			effectFunction=western;
+    		}
+    		else if(id=="noir")
+    		{
+    			pushUnpushButtons("noir",["normal","western","scifi"]);
+    			effectFunction=noir;
+    		}
+    		else if(id=="scifi")
+    		{
+                pushUnpushButtons("scifi",["normal","western","noir"]);
+                effectFunction=scifi;
+    		}
+    	}
+    	function setVideo(e)
+    	{
+    		var id=e.target.getAttribute("id");
+    		if(id=="video1")
+    		{
+    			pushUnpushButtons("video1",["video2"]);
+    		}
+    		else if(id=="video2")
+    		{
+    			pushUnpushButtons("video2",["video1"]);
+    		}
+    		/*切换测试视频*/
+    		var video=document.getElementById("video");
+    		video.src=videos[id]+getFormatExtension();
+    		video.load();
+    		video.play();
+    		pushUnpushButtons("play",["pause"])
+    	}
+
+    	function processFrame()
+    	{
+            var video=document.getElementById("video");
+            if(video.paused||video.ended)
+            {
+            	return;/*查看视频是否仍在播放，如果没有播放，说明没有工作可做，直接返回*/
+            }
+            var bufferCanvas=document.getElementById("buffer");
+            var displayCanvas=document.getElementById("display");
+            var buffer=bufferCanvas.getContext("2d");
+            var display=displayCanvas.getContext("2d");
+            /*drawImage方法，取一个图像，把这个图像绘制到画布上，是它位于x，y位置，并有指定的宽度和高度。一下方法，从video视频得到一个图像，将视频指定为源，drawImage会得到一个视频帧作为图像数据*/
+            buffer.drawImage(video,0,0,bufferCanvas.width,bufferCanvas.height);
+            var frame=buffer.getImageData(0,0,bufferCanvas.width,bufferCanvas.height);
+    	}
+  /*以下为辅助函数*/
+    	function pushUnpushButtons(idToPush, idarrayToUnpush) 
+    	{
+    		if (idToPush != "") 
+    		{
+              var anchor = document.getElementById(idToPush);
+              var theClass = anchor.getAttribute("class");
+              if (!theClass.indexOf("selected") >= 0) 
+              {
+                     theClass = theClass + " selected";
+                     anchor.setAttribute("class", theClass);/*在锚中增加“selected”类，从而“按下”这个按钮*/
+                     var newImage = "url(images/" + idToPush + "pressed.png)";
+                     anchor.style.backgroundImage = newImage;/*更新锚元素的背景图像*/
+                }
+            }
+           
+            for (var i = 0; i < idarrayToUnpush.length; i++) 
+            	/*要让按钮不再按下，循环处理不再按下的id数组中的各个元素，获取各个锚*/
+            {
+                    anchor = document.getElementById(idarrayToUnpush[i]);
+                    theClass = anchor.getAttribute("class");
+                    if (theClass.indexOf("selected") >= 0) 
+                    	/*确保按钮已经按下，如果是，会有一个selected类*/
+                    {
+                        theClass = theClass.replace("selected", "");
+                        anchor.setAttribute("class", theClass);/*从类中删除selected*/
+                        anchor.style.backgroundImage = "";/*？？？删除背景图像，从而能看到未按下的按钮？？？*/
+                    }
+            }
+        }
+        function isButtonPushed(id) 
+        {
+            var anchor = document.getElementById(id);
+            var theClass = anchor.getAttribute("class");
+            return (theClass.indexOf("selected") >= 0);
+        }
+    
+
+    </script>
+</head>
+<body>
+	<div id="console">
+
+	  <div id="videoDiv">
+	    <video id="video" width="720" height="480"></video>
+	    <!--用画布实现scratch缓冲区-->
+	    <canvas id="buffer" width="720" height="480"></canvas>
+	    <canvas id="display" width="720" height="480"></canvas>
+	  </div>
+
+	  <div id="dashboard">
+	    <div id="effects">
+	    	<a class="effect" id="normal"></a>
+	    	<a class="effect" id="western"></a>
+	    	<a class="effect" id="noir"></a>
+	    	<a class="effect" id="scifi"></a>
+	    </div>
+	    <div id="controls">
+	    	<a class="control" id="play"></a>
+	    	<a class="control" id="pause"></a>
+	    	<a class="control" id="loop"></a>
+	    	<a class="control" id="mute"></a>
+	    </div>
+	    <div id="videoSelection">
+	        <a class="videoSelection" id="video1"></a>
+	        <a class="videoSelection" id="video2"></a>
+	    </div>
+	  </div>
+
+	</div>
+</body>
+</html>
