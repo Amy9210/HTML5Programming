@@ -158,6 +158,28 @@
             /*drawImage方法，取一个图像，把这个图像绘制到画布上，是它位于x，y位置，并有指定的宽度和高度。一下方法，从video视频得到一个图像，将视频指定为源，drawImage会得到一个视频帧作为图像数据*/
             buffer.drawImage(video,0,0,bufferCanvas.width,bufferCanvas.height);
             var frame=buffer.getImageData(0,0,bufferCanvas.width,bufferCanvas.height);
+		/*以下为得到rgb值得函数（。。不太明白）*/
+            var length=frame.data.length/4;
+            for(var i=0;i<length;i++)
+            {
+            	var r=frame.data[i*4+0];
+            	var g=frame.data[i*4+1];
+            	var b=frame.data[i*4+2];
+            	if(effectFunction)
+            	{
+            		effectFunction(i,r,g,b,frame.data);
+            	}
+            }
+            display.putImageData(frame,0,0);
+            setTimeout(processFrame,0);/*js并不会真的在0毫秒内就运行processFrame这个函数，不过它会提供所能得到的下一个最快的时间片*/
+    	}
+    	function noir(pos,r,g,b,data)
+    	{
+    		var brightness=(3*r+4*g+b)>>>3;
+    		if(brightness<0)brightness=0;
+    		data[pos*4+0]=brightness;
+    		data[pos*4+1]=brightness;
+    		data[pos*4+2]=brightness;
     	}
   /*以下为辅助函数*/
     	function pushUnpushButtons(idToPush, idarrayToUnpush) 
